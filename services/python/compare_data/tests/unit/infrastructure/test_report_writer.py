@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pytest
 from openpyxl import load_workbook
-
 from src.domain.models import (
     ComparisonResult,
     ComparisonSummary,

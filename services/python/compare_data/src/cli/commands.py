@@ -10,7 +10,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
 from src.application.compare_usecase import CompareResult, CompareUseCase
-from src.config.settings import Settings, get_settings
+from src.config.settings import get_settings
 from src.domain.exceptions import CompareDataError
 from src.infrastructure.csv_reader import CSVReader
 from src.infrastructure.db_reader import DBReader

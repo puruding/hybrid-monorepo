@@ -3,7 +3,6 @@ import csv
 from pathlib import Path
 
 import pytest
-
 from src.domain.exceptions import CSVReadError
 from src.infrastructure.csv_reader import CSVReader
 

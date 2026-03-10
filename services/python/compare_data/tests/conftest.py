@@ -1,10 +1,9 @@
 """Common test fixtures."""
 import csv
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
-
 from src.domain.models import EquipmentRecord
 
 

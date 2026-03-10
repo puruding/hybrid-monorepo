@@ -43,7 +43,7 @@ class CSVReader(EquipmentDataPort):
 
         records: list[EquipmentRecord] = []
         try:
-            with open(self.file_path, "r", encoding=self.encoding, newline="") as f:
+            with open(self.file_path, encoding=self.encoding, newline="") as f:
                 reader = csv.reader(f)
 
                 if self.has_header:

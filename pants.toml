@@ -14,9 +14,7 @@ backend_packages = [
 ]
 
 # Ignore Go services (managed by Makefile)
-pants_ignore.add = [
-    "/services/go/",
-]
+pants_ignore = ["/services/go/"]
 
 # Build root marker
 build_file_prelude_globs = []
@@ -24,7 +22,7 @@ build_file_prelude_globs = []
 [source]
 root_patterns = [
     "/",
-    "services/*",
+    "services/python/*",
     "shared/*",
     "web",
 ]
@@ -36,6 +34,9 @@ enable_resolves = true
 
 [python.resolves]
 python-default = "python-default.lock"
+
+[python.resolves_to_constraints_file]
+python-default = "requirements.txt"
 
 [python-infer]
 use_rust_parser = true

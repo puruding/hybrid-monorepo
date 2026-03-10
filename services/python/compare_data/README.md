@@ -1,6 +1,6 @@
-# LGU+ CSV-DB Data Comparison Tool
+# CSV-DB Data Comparison Tool
 
-LGU+에서 제공한 CSV 파일(시리얼번호, 제품명)과 LGU MariaDB의 장비 데이터를 비교하여 데이터 불일치를 식별하고 리포트를 생성하는 도구
+CSV 파일(시리얼번호, 제품명)과 MariaDB의 장비 데이터를 비교하여 데이터 불일치를 식별하고 리포트를 생성하는 도구
 
 ## 기능
 
@@ -30,11 +30,11 @@ pip install -e ".[dev]"
 `.env` 파일에 데이터베이스 접속 정보 설정:
 
 ```env
-LGU_DB_HOST=10.165.200.216
-LGU_DB_PORT=3306
-LGU_DB_NAME=mss_uplus
-LGU_DB_USER=servicedesk
-LGU_DB_PASSWORD=your_password
+U+_DB_HOST=10.165.200.216
+U+_DB_PORT=3306
+U+_DB_NAME=mss_uplus
+U+_DB_USER=servicedesk
+U+_DB_PASSWORD=your_password
 ```
 
 ## 사용법
@@ -42,7 +42,7 @@ LGU_DB_PASSWORD=your_password
 ### 기본 사용
 
 ```bash
-# 기본 비교 실행 (lgu_serial.csv 와 LGU+ DB 비교)
+# 기본 비교 실행 (U+_serial.csv 와 U++ DB 비교)
 python -m src compare
 
 # 특정 CSV 파일 지정
@@ -68,7 +68,7 @@ python -m src compare --show-mismatches 20
 
 | 옵션 | 단축 | 설명 | 기본값 |
 |------|------|------|--------|
-| `--csv` | `-c` | Source CSV 파일 경로 | `lgu_serial.csv` |
+| `--csv` | `-c` | Source CSV 파일 경로 | `U+_serial.csv` |
 | `--format` | `-f` | 출력 형식 (xlsx/csv/both) | `xlsx` |
 | `--output` | `-o` | 출력 디렉토리 | `output/` |
 | `--header/--no-header` | | CSV 헤더 유무 | `--no-header` |
@@ -97,7 +97,7 @@ python -m src version
 
 ```
 ╭──────────────────────────────────────────────────╮
-│         LGU+ Data Comparison Report              │
+│         U+ Data Comparison Report              │
 │              2026-03-03 14:30:00                 │
 ╰──────────────────────────────────────────────────╯
 

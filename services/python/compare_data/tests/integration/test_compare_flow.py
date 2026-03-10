@@ -3,7 +3,6 @@ import csv
 from pathlib import Path
 
 import pytest
-
 from src.application.compare_usecase import CompareUseCase
 from src.domain.models import EquipmentRecord
 from src.infrastructure.csv_reader import CSVReader

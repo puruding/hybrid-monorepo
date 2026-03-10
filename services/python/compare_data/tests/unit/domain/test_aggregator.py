@@ -1,5 +1,4 @@
 """Unit tests for aggregator module."""
-import pytest
 
 from src.domain.aggregator import aggregate_by_product
 from src.domain.models import EquipmentRecord

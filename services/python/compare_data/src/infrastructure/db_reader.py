@@ -1,5 +1,5 @@
 """Database reader adapter for LGU MariaDB."""
-from typing import Sequence
+from collections.abc import Sequence
 
 import structlog
 from sqlalchemy import Row, create_engine, text

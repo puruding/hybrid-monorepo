@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from sqlalchemy.exc import SQLAlchemyError
-
 from src.domain.exceptions import DatabaseConnectionError
 from src.infrastructure.db_reader import DBReader
 

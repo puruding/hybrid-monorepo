@@ -3,6 +3,10 @@ name = "lgu-data-compare"
 version = "1.0.0"
 description = "LGU+ CSV-DB Data Comparison Tool"
 requires-python = ">=3.11,<3.13"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
 dependencies = [
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
@@ -30,6 +34,10 @@ lgu-compare = "src.cli.commands:app"
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.pants]
+# This project is managed by Pants
+# Dependencies are resolved from python-default.lock at repository root
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

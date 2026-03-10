@@ -2,7 +2,6 @@
 import time
 
 import pytest
-
 from src.domain.comparator import compare_datasets
 from src.domain.models import EquipmentRecord, MatchStatus
 

@@ -3,11 +3,9 @@ import csv
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-from typer.testing import CliRunner
-
 from src.cli.commands import app
 from src.domain.models import EquipmentRecord
+from typer.testing import CliRunner
 
 runner = CliRunner()
 
