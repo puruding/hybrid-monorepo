@@ -1,0 +1,2 @@
+[console_scripts]
+lgu-compare = src.cli.commands:app

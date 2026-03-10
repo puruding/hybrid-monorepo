@@ -1,159 +1,270 @@
-# Turborepo starter
+# Hybrid Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+A production-ready hybrid monorepo combining **Go services** (built with Makefile) and **Python backend + Web frontend** (managed by Pants build system).
 
-## Using this example
+## Architecture
 
-Run the following command:
+This monorepo uses a hybrid build approach:
 
-```sh
-npx create-turbo@latest
+- **Go Services**: Built directly using Makefile and Go toolchain
+  - `/services/go/gateway` - API Gateway service
+  - `/services/go/detection` - Detection service
+  - `/services/go/pkg` - Shared Go packages
+
+- **Python Backend + Web Frontend**: Managed by Pants build system
+  - `/services/python/*` - Python microservices (triage, copilot, investigation agent)
+  - `/web/` - Web applications built with Next.js and Turborepo
+  - `/shared/` - Shared schemas and resources
+
+## Tech Stack
+
+### Go Services
+- **Go 1.23.8** - Programming language
+- **Makefile** - Build orchestration
+
+### Python Backend
+- **Python 3.11.15** - Programming language
+- **Pants 2.30.1** - Build system (scie-pants launcher)
+- **Ruff** - Linter and formatter
+- **MyPy** - Static type checker
+- **PEX** - Python executable packaging
+
+### Web Frontend
+- **Node.js 18.20.8 LTS** - Runtime
+- **pnpm 9.15.9** - Package manager
+- **Turborepo** - Build orchestration (wrapped by Pants)
+- **Next.js** - React framework
+- **TypeScript** - Type-safe JavaScript
+- **ESLint** - Linting
+
+## Quick Start
+
+### Prerequisites
+
+- Go 1.23+
+- Python 3.11+
+- Node.js 18+
+- pnpm 9+
+
+### Installation
+
+Install all dependencies:
+
+```bash
+make install
 ```
 
-## What's inside?
+This will:
+1. Set up Pants build system
+2. Generate Python dependency lockfiles
+3. Install web dependencies via Pants
 
-This Turborepo includes the following packages/apps:
+### Building
 
-### Apps and Packages
+Build all services:
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+make build
 ```
 
-Without global `turbo`, use your package manager:
+Or build specific components:
 
-```sh
-cd my-turborepo
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+make go-build          # Build Go services
+make python-build      # Build Python services (PEX files)
+make web-build         # Build web apps
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Testing
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Run all tests:
 
-```sh
-turbo build --filter=docs
+```bash
+make test
 ```
 
-Without global `turbo`:
+Or test specific components:
 
-```sh
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+```bash
+make go-test           # Test Go services
+make python-test       # Test Python services
+make web-test          # Test web apps
 ```
 
-### Develop
+### Linting
 
-To develop all apps and packages, run the following command:
+Lint all code:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
+```bash
+make lint
 ```
 
-Without global `turbo`, use your package manager:
+Or lint specific components:
 
-```sh
-cd my-turborepo
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+make go-lint           # Lint Go code (go fmt + go vet)
+make python-lint       # Lint Python code (ruff)
+make web-lint          # Lint web code (eslint)
+make python-check      # Type check Python (mypy)
+make web-check-types   # Type check web (tsc)
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Development
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Run services in development mode (each in separate terminal):
 
-```sh
-turbo dev --filter=web
+```bash
+# Go services
+make go-dev-gateway      # Run gateway on :8080
+make go-dev-detection    # Run detection on :8081
+
+# Python services
+make python-dev-triage   # Run triage on :8082
+make python-dev-copilot  # Run copilot on :8083
+
+# Web apps
+make web-dev             # Run web apps on :3000, :3001
 ```
 
-Without global `turbo`:
+## Project Structure
 
-```sh
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```
+.
+├── Makefile              # Main build orchestration
+├── pants.toml            # Pants configuration
+├── BUILD.web             # Pants targets for web
+├── services/
+│   ├── go/               # Go services (Makefile)
+│   │   ├── gateway/
+│   │   ├── detection/
+│   │   └── pkg/
+│   └── python/           # Python services (Pants)
+│       ├── triage/
+│       ├── copilot/
+│       └── agents/
+├── web/                  # Web monorepo (Pants + Turborepo)
+│   ├── apps/
+│   │   ├── web/
+│   │   └── docs/
+│   ├── packages/
+│   │   ├── ui/
+│   │   ├── eslint-config/
+│   │   └── typescript-config/
+│   └── turbo.json
+└── shared/               # Shared resources
+    └── api-schema/
 ```
 
-### Remote Caching
+## Build System Details
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Why Hybrid?
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+This monorepo uses different build systems for different languages to optimize for each ecosystem:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+1. **Go + Makefile**: Go has excellent built-in tooling, so we use Makefile for simple orchestration
+2. **Python + Web + Pants**: Pants provides unified caching, dependency management, and build orchestration for Python and wraps web tools (pnpm/Turborepo)
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### About scie-pants Launcher
 
-```sh
-cd my-turborepo
-turbo login
+This project uses **scie-pants**, the next-generation Pants launcher (v0.12.5):
+
+- ✅ **Self-contained**: Bundles its own Python interpreter
+- ✅ **GitHub releases**: Pants 2.18+ distributed via GitHub (not PyPI)
+- ✅ **Auto-download**: Automatically fetches the version specified in `pants.toml`
+- ✅ **Multi-version**: Different projects can use different Pants versions
+
+The `pants` binary in this repo is scie-pants launcher, not the old PyPI-based script.
+
+### How Pants Manages Web
+
+While Pants doesn't have a stable JavaScript backend yet, we use Pants' `run_shell_command` targets to wrap pnpm and Turborepo commands. This provides:
+
+- ✅ Unified build interface (all via `make` or `./pants`)
+- ✅ Dependency tracking between Python and Web
+- ✅ Consistent CI/CD pipelines
+- ✅ Leverages Turborepo's caching under the hood
+
+### Direct Pants Commands
+
+You can also run Pants commands directly:
+
+✅ 명령어
+✅ ./pants list     # 타겟 목록 확인
+✅ ./pants package  # PEX 빌드
+✅ ./pants test     # 테스트 실행
+✅ ./pants lint     # 린트 체크
+✅ ./pants check    # 타입 체크
+✅ ./pants generate-lockfiles # 의존성 재생성 (lockfile 생성)
+✅ ./pants run      # 서비스 실행
+✅ ./pants dependencies # 의존성 확인
+✅ ./pants peek     # 타겟 상세 정보
+
+```bash
+# Python services
+./pants list services/python::
+./pants package services/python/triage:triage
+./pants test services/python::
+./pants lint services/python::
+./pants check services/python::
+./pants generate-lockfiles services/python::
+./pants run services/python::
+./pants dependencies services/python::
+./pants peek services/python::
+
+# 린트 및 포맷 (변경됨!)
+./pants lint services/python/notification::    # 체크만
+./pants fmt services/python/notification::     # 포맷팅
+./pants fix services/python/notification::     # 자동 수정 (NEW!)
+
+
+# Web (via shell commands)
+./pants run //:web-install
+./pants run //:web-build
+./pants run //:web-lint
+./pants run //:web-test
 ```
 
-Without global `turbo`, use your package manager:
+## CI/CD
 
-```sh
-cd my-turborepo
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+The Makefile provides CI-specific targets:
+
+```bash
+make ci-go          # CI: Lint, test, build Go
+make ci-python      # CI: Lint, check, test, package Python
+make ci-web         # CI: Lint, type-check, build, test Web
+make ci-all         # CI: Run all checks
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Common Commands
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
+```bash
+make help           # Show all available commands
+make version        # Show tool versions
+make clean          # Clean all build artifacts
 ```
 
-Without global `turbo`:
+## Configuration Files
 
-```sh
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
+- [pants.toml](pants.toml) - Pants build system configuration
+- [Makefile](Makefile) - Main build orchestration
+- [ruff.toml](ruff.toml) - Python linting configuration
+- [mypy.ini](mypy.ini) - Python type checking configuration
+- [web/turbo.json](web/turbo.json) - Turborepo configuration
 
-## Useful Links
+## Developer Guides
 
-Learn more about the power of Turborepo:
+### Getting Started
+- [Development Setup Guide](docs/development-setup.md) - Complete environment setup with Docker
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+### Adding Services
+- [Adding Go Service](docs/adding-go-service.md) - Step-by-step guide to add new Go services
+- [Quick: Add Go Service](docs/quick-add-go-service.md) - Quick reference for adding Go services
+- [Adding Python Service](docs/adding-python-service.md) - Step-by-step guide to add new Python services
+- [Quick: Add Python Service](docs/quick-add-python-service.md) - Quick reference for adding Python services
+
+## Learn More
+
+- [Pants Build System](https://www.pantsbuild.org/)
+- [Go Documentation](https://go.dev/doc/)
+- [Turborepo](https://turbo.build/repo)
+- [Next.js](https://nextjs.org/)

@@ -1,0 +1,67 @@
+[GLOBAL]
+pants_version = "2.30.1"
+backend_packages = [
+    # Language backends
+    "pants.backend.python",
+
+    # Additional features
+    "pants.backend.docker",
+    "pants.backend.shell",
+
+    # Python linters
+    "pants.backend.experimental.python.lint.ruff.check",
+    "pants.backend.python.typecheck.mypy",
+]
+
+# Ignore Go services (managed by Makefile)
+pants_ignore.add = [
+    "/services/go/",
+]
+
+# Build root marker
+build_file_prelude_globs = []
+
+[source]
+root_patterns = [
+    "/",
+    "services/*",
+    "shared/*",
+    "web",
+]
+
+# ===== Python Configuration =====
+[python]
+interpreter_constraints = [">=3.11,<3.13"]
+enable_resolves = true
+
+[python.resolves]
+python-default = "python-default.lock"
+
+[python-infer]
+use_rust_parser = true
+
+# ===== Ruff (Python Linter) =====
+[ruff]
+config = "ruff.toml"
+
+# ===== MyPy (Python Type Checker) =====
+[mypy]
+config = "mypy.ini"
+
+# ===== Docker Configuration =====
+[docker]
+default_repository = "{directory}"
+
+# ===== Cache Configuration =====
+# [cache]
+# local_cache = true
+
+# Remote cache (optional - uncomment when ready)
+# [GLOBAL]
+# remote_cache_read = true
+# remote_cache_write = true
+# remote_store_address = "grpc://cache.example.com:9092"
+
+# ===== Anonymous Telemetry =====
+[anonymous-telemetry]
+enabled = false

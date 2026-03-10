@@ -1,0 +1,139 @@
+openapi: 3.0.3
+info:
+  title: Security Operations API
+  description: API for security operations services
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Gateway (local development)
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /api/v1/triage:
+    post:
+      summary: Triage an incident
+      operationId: triageIncident
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriageRequest'
+      responses:
+        '200':
+          description: Triage result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResponse'
+
+  /api/v1/chat:
+    post:
+      summary: Chat with AI copilot
+      operationId: chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Chat response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - service
+      properties:
+        status:
+          type: string
+          example: healthy
+        service:
+          type: string
+          example: gateway
+
+    TriageRequest:
+      type: object
+      required:
+        - incident_id
+        - description
+      properties:
+        incident_id:
+          type: string
+          example: INC-001
+        description:
+          type: string
+          example: Suspicious login detected
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+
+    TriageResponse:
+      type: object
+      required:
+        - incident_id
+        - classification
+        - confidence
+        - recommended_actions
+      properties:
+        incident_id:
+          type: string
+        classification:
+          type: string
+        confidence:
+          type: number
+          format: float
+        recommended_actions:
+          type: array
+          items:
+            type: string
+
+    ChatRequest:
+      type: object
+      required:
+        - session_id
+        - message
+      properties:
+        session_id:
+          type: string
+        message:
+          type: string
+        context:
+          type: object
+          additionalProperties: true
+
+    ChatResponse:
+      type: object
+      required:
+        - session_id
+        - response
+        - suggestions
+      properties:
+        session_id:
+          type: string
+        response:
+          type: string
+        suggestions:
+          type: array
+          items:
+            type: string

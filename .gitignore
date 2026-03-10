@@ -36,3 +36,34 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Pants
+.pants.d/
+.pids/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+.coverage
+
+# pnpm
+.pnpm-store/
+pnpm-debug.log*
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work.sum

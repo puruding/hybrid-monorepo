@@ -1,0 +1,44 @@
+# Web monorepo BUILD file (at root level)
+# Uses run_shell_command to wrap pnpm/turbo commands under Pants management
+# Note: pnpm workspace is configured at root level to include web/apps/* and web/packages/*
+
+run_shell_command(
+    name="web-install",
+    command="pnpm install",
+    execution_dependencies=[":web-package-files"],
+)
+
+run_shell_command(
+    name="web-build",
+    command="pnpm exec turbo run build",
+    execution_dependencies=[":web-install"],
+)
+
+run_shell_command(
+    name="web-test",
+    command="pnpm exec turbo run test",
+    execution_dependencies=[":web-install"],
+)
+
+run_shell_command(
+    name="web-lint",
+    command="pnpm exec turbo run lint",
+    execution_dependencies=[":web-install"],
+)
+
+run_shell_command(
+    name="web-check-types",
+    command="pnpm exec turbo run check-types",
+    execution_dependencies=[":web-install"],
+)
+
+run_shell_command(
+    name="web-dev",
+    command="pnpm exec turbo run dev",
+    execution_dependencies=[":web-install"],
+)
+
+shell_sources(
+    name="web-package-files",
+    sources=["package.json", "pnpm-workspace.yaml", "web/package.json", "web/turbo.json"],
+)

@@ -1,0 +1,7 @@
+__init__
+__main__
+application
+cli
+config
+domain
+infrastructure

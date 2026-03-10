@@ -1,0 +1,29 @@
+{
+  "name": "Monorepo Dev (Pants + Turborepo)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "postCreateCommand": "cd /workspace && curl -L https://static.pantsbuild.org/setup/pants -o pants && chmod +x pants && ./pants --version",
+  "forwardPorts": [3000, 3001, 8080, 8081, 8082, 8083],
+  "portsAttributes": {
+    "3000": { "label": "Web App" },
+    "3001": { "label": "Docs" },
+    "8080": { "label": "Gateway (Go)" },
+    "8081": { "label": "Detection (Go)" },
+    "8082": { "label": "Triage (Python)" },
+    "8083": { "label": "Copilot (Python)" }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "golang.go",
+        "ms-python.python",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}
